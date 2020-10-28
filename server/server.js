@@ -17,6 +17,7 @@ mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true,useUnifiedTopo
 //require models
 require('./models/user')
 
+
 //routes
 app.use('/', require('./routes/auth'));
 

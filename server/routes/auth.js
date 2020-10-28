@@ -1,36 +1,73 @@
 const express = require('express');
 const router = express.Router()
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
+const requireLogin = require('../middleware/requireLogin')
 const User = mongoose.model("User")
 
-router.get('/', (req, res)=>{
-  res.send('hi')
+router.get('/protected',requireLogin, (req,res)=>{
+  res.send("hello user")
 })
 
-router.post('/signup', async (req,res)=>{
-  let findUser
+//------------------------------------------------------//
+//Signup
+router.post('/signup', (req,res)=>{
   const {name, email, password} = req.body
-  if(!email || !name || !password){
-    return res.status(422).json({error: 'All fields are required'})
-  }
-  const user = new User({
-    name: name,
-    email: email,
-    password: password
-  })
-  try {
-    findUser = await User.findOne({email: email})
-    if(findUser == null){
-      await user.save()
-      return res.status(200).json({message: 'success'})
+    if(!email || !name || !password){
+      return res.status(422).json({error: 'All fields are required'})
     }
-    return res.status(422).json({error: 'already exists'})
-  } catch (e){
-    console.log(e);
-    res.redirect('/')
-  }
+      User.findOne({email: email})
+      .then(findUser=>{
+        if(!findUser){
+          const hashedpassword = bcrypt.hashSync(password, 12)
+            const user = new User({
+              name: name,
+              email: email,
+              password: hashedpassword
+            })
+            user.save()
+            return res.status(200).json({message: 'success'})
+        }
+        return res.status(422).json({error: 'already exists'})
+      })
+      .catch(e=>{
+        console.log(e);
+      })
 })
+
+//------------------------------------------------------//
+
+//Login handle
+router.post('/signin', (req, res, next)=>{
+  const {email, password} = req.body
+  if(!email || !password){
+    res.status(422).json({error: 'please fill all fields'})
+  }
+  //Match user
+  User.findOne({
+      email: email
+    })
+    .then(user => {
+      if (!user) {
+        return res.status(422).json({error: 'invalid email'})
+      }
+      //Match password
+      bcrypt.compare(password, user.password, (err, isMatch) => {
+        if (err) throw err;
+
+        if (isMatch) {
+          // res.status(200).json({message: 'success'})
+          const token = jwt.sign({_id: user._id}, process.env.JWT_SECRET)
+          res.json({token})
+        } else {
+          res.status(422).json({error: 'incorrect password'})
+        }
+      })
+    })
+   .catch(err => console.log(err));
+});
 
 
 module.exports = router
