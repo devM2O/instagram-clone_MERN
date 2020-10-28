@@ -1,0 +1,40 @@
+
+GET http://localhost:3000/
+
+###
+
+POST http://localhost:3000/signup
+Content-Type: application/json
+
+{
+    "name": "bob",
+    "email": "email@email",
+    "password": "password"
+}
+
+
+###
+
+POST http://localhost:3000/signin
+Content-Type: application/json
+
+{
+    "email": "email@email",
+    "password": "password"
+}
+
+###
+
+GET http://localhost:3000/protected
+Authorization: minnmawoo eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjk5YWY0ODMwZWM4MjIxOTMyYTNjMzYiLCJpYXQiOjE2MDM5MDg3MTd9.1XB-w7xLc1ytNkdCnzAerZNbUPzBL3V5iaopECx9Kps
+
+###
+
+POST http://localhost:3000/createPost
+Authorization: minnmawoo eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjk5YWY0ODMwZWM4MjIxOTMyYTNjMzYiLCJpYXQiOjE2MDM5MDg3MTd9.1XB-w7xLc1ytNkdCnzAerZNbUPzBL3V5iaopECx9Kps
+Content-Type: application/json
+
+{
+    "title": "title",
+    "body": "body"
+}

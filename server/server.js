@@ -16,10 +16,12 @@ mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true,useUnifiedTopo
 
 //require models
 require('./models/user')
+require('./models/post')
 
 
 //routes
-app.use('/', require('./routes/auth'));
+app.use('/', require('./routes/auth'))
+app.use('/', require('./routes/post'))
 
 const port = process.env.PORT || 3000;
 app.listen(port, function() {
