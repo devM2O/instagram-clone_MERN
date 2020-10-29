@@ -60,7 +60,8 @@ router.post("/signin", (req, res, next) => {
         if (isMatch) {
           // res.status(200).json({message: 'success'})
           const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
-          res.json({ token });
+          const {id, name, email} = user
+          res.json({ token, user:{id, name, email}});
         } else {
           res.status(422).json({ error: "incorrect password" });
         }
