@@ -28,7 +28,7 @@ router.post("/signup", (req, res) => {
           password: hashedpassword,
         });
         user.save();
-        return res.status(200).json({ message: "success" });
+        return res.status(200).json({ message: "You are now registered" });
       }
       return res.status(422).json({ error: "already exists" });
     })
