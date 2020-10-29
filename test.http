@@ -38,3 +38,12 @@ Content-Type: application/json
     "title": "title",
     "body": "body"
 }
+
+###
+
+GET http://localhost:3000/allPosts
+
+###
+
+GET http://localhost:3000/myPosts
+Authorization: minnmawoo eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjk5YWY0ODMwZWM4MjIxOTMyYTNjMzYiLCJpYXQiOjE2MDM5MDg3MTd9.1XB-w7xLc1ytNkdCnzAerZNbUPzBL3V5iaopECx9Kps
