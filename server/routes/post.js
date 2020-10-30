@@ -33,8 +33,8 @@ router.get('/allPosts',async (req,res)=>{
 //---------------------------------------------------------------//
 //post posts
 router.post('/createPost',requireLogin, (req,res)=>{
-    const {title, body} = req.body
-    if(!title || !body){
+    const {title, body, pic} = req.body
+    if(!title || !body || !pic){
         res.status(422).json({error: "all fields are required"})
     }
     // console.log(req.user)
@@ -43,6 +43,7 @@ router.post('/createPost',requireLogin, (req,res)=>{
     const post = new Post({
         title,
         body,
+        pic,
         postedBy: req.user
     })
     post.save()
