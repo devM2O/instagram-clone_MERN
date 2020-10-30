@@ -26,6 +26,8 @@ export default function Signin() {
       if(data.error){
         M.toast({html: data.error, classes: "#ff5252 red accent-2"})
       }else{
+        localStorage.setItem('jwt', data.token)
+        localStorage.setItem('user', JSON.stringify(data.user))
         M.toast({html: `Welcome ${data.user.name}`, classes: "#388e3c green darken-2"})
         history.push('/')
       }

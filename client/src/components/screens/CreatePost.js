@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import M from 'materialize-css'
 import {useHistory} from 'react-router-dom'
 
@@ -9,28 +9,14 @@ export default function CreatePost() {
   const [url, setUrl] = useState("")
   const history = useHistory()
 
-  const postDetails = () => {
-//-----------------------use cloud API-------------------------------//
-    const data = new FormData()
-    data.append("file", image)
-    data.append("upload_preset", "insta-clone")
-    data.append("cloud_name", "minn-maw-oo")
-    fetch("https://api.cloudinary.com/v1_1/minn-maw-oo/image/upload", {
-      method: "post",
-      body: data
-    })
-    .then(res=>res.json())
-    .then(data=>{
-      setUrl(data.url)
-    })
-    .catch(err=>{
-      console.log(err);
-    })
-//-----------------------send to backend-------------------------------//
+  useEffect(()=>{
+    if(url){
+    //-----------------------send to backend-----------------------------//
     fetch("/createPost", {
       method: "post",
       headers:{
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": "minnmawoo " + localStorage.getItem("jwt")
       },
       body:JSON.stringify({
         title,
@@ -47,6 +33,26 @@ export default function CreatePost() {
         history.push('/')
       }
     }).catch(err=>{
+      console.log(err);
+    })
+    }
+  }, [url])
+
+  const postDetails = () => {
+//-----------------------use cloud API-------------------------------//
+    const data = new FormData()
+    data.append("file", image)
+    data.append("upload_preset", "insta-clone")
+    data.append("cloud_name", "minn-maw-oo")
+    fetch("https://api.cloudinary.com/v1_1/minn-maw-oo/image/upload", {
+      method: "post",
+      body: data
+    })
+    .then(res=>res.json())
+    .then(data=>{
+      setUrl(data.url)
+    })
+    .catch(err=>{
       console.log(err);
     })
   }
