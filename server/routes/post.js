@@ -19,7 +19,7 @@ router.get('/myPosts',requireLogin, async (req,res)=>{
 
 //---------------------------------------------------------------//
 //get post
-router.get('/allPosts',async (req,res)=>{
+router.get('/allPosts',requireLogin,async (req,res)=>{
     let query = Post.find()
     .populate("postedBy", "id name")
     try {

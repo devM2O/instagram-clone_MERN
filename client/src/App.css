@@ -34,10 +34,27 @@ a {
   width: 30%
 }
 
-.home-card{
-  max-width: 500px;
-  height: max-content;
-  margin: 26px auto;
+
+
+@media (min-width: 524px) and (max-width: 10000px) {
+  .home-card{
+    max-width: 500px;
+    height: max-content;
+    margin: 26px auto;
+  }
+}
+
+@media (min-width: 300px) and (max-width: 524px) {
+  .home-card{
+    max-width: 95%;
+    height: max-content;
+    margin: 26px auto;
+  }
+}
+
+.img-card{
+  width: 100%;
+  object-fit: contain;
 }
 
 #toast-container{

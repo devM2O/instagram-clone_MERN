@@ -42,7 +42,7 @@ Content-Type: application/json
 ###
 
 GET http://localhost:5000/allPosts
-
+Authorization: minnmawoo eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjk5YWY0ODMwZWM4MjIxOTMyYTNjMzYiLCJpYXQiOjE2MDM5MDg3MTd9.1XB-w7xLc1ytNkdCnzAerZNbUPzBL3V5iaopECx9Kps
 ###
 
 GET http://localhost:5000/myPosts
