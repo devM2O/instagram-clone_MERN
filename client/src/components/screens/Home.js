@@ -7,7 +7,7 @@ export default function Home() {
     fetch("/allPosts", {
       headers: {
         Authorization: "minnmawoo " + localStorage.getItem("jwt"),
-      },
+      }
     })
       .then((res) => res.json())
       .then((result) => {

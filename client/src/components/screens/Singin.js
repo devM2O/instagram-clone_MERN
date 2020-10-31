@@ -44,11 +44,11 @@ export default function Signin() {
     <div className="mycard">
       <div className="card auth-card input-field">
         <h2>Instagram</h2>
-        <input type="text" placeholder="email" 
+        <input type="email" placeholder="email" 
           value={email}
           onChange={(e)=>setEmail(e.target.value)}
         />
-        <input type="text" placeholder="password" 
+        <input type="password" placeholder="password" 
           value={password}
           onChange={(e)=>setPassword(e.target.value)}
         />
