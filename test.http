@@ -47,3 +47,12 @@ Authorization: minnmawoo eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjk5YW
 
 GET http://localhost:5000/myPosts
 Authorization: minnmawoo eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjk5YWY0ODMwZWM4MjIxOTMyYTNjMzYiLCJpYXQiOjE2MDM5MDg3MTd9.1XB-w7xLc1ytNkdCnzAerZNbUPzBL3V5iaopECx9Kps
+
+###
+PUT http://localhost:5000/like
+Authorization: minnmawoo eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjk5YWY0ODMwZWM4MjIxOTMyYTNjMzYiLCJpYXQiOjE2MDM5MDg3MTd9.1XB-w7xLc1ytNkdCnzAerZNbUPzBL3V5iaopECx9Kps
+Content-Type: application/json
+
+{
+    "postId": "5f9d9f728e576a841aea3833" 
+}

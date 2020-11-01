@@ -8,7 +8,7 @@ export default function Profile() {
   useEffect(() => {
     fetch("/myPosts", {
       headers: {
-        Authorization: "minnmawoo " + localStorage.getItem("jwt"),
+        Authorization: "minnmawoo " + localStorage.getItem("jwt")
       },
     })
       .then((res) => res.json())
