@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { UserContext } from "../../App";
 
 export default function Home() {
@@ -69,6 +69,31 @@ export default function Home() {
   };
   //---------------------------------------------------------------//
 
+  const makeComment = (text, postId) => {
+    fetch("/comment", {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "minnmawoo " + localStorage.getItem("jwt"),
+      },
+      body: JSON.stringify({
+        postId,
+        text,
+      }),
+    }).then(res=>res.json())
+    .then(result=>{
+      console.log(result);
+      const newData = data.map((item) => {
+        if (item._id == result._id) {
+          return result;
+        } else {
+          return item;
+        }
+      });
+      setData(newData)
+    })
+  };
+
   return (
     <div className="home">
       {data.map((item) => {
@@ -104,7 +129,32 @@ export default function Home() {
 
               <h6>{item.likes.length} likes</h6>
               <p>{item.body}</p>
-              <input type="text" placeholder="add comment" />
+              {
+                item.comments.map(record=>{
+                  return(
+                  <h6 key={record._id}><span style={{fontWeight:"600"}}>{record.postedBy.name} </span>{record.text}</h6>
+                  )
+                })
+              }
+              <form
+                onSubmit={(e)=>{
+                  e.preventDefault()
+                  makeComment(e.target[0].value, item._id);
+                }}
+              >
+                <div style={{display: "flex"}}>
+                <input type="text" placeholder="add comment"/>
+                <button
+                  class="btn waves-effect waves-light"
+                  type="submit"
+                  name="action"
+                >
+                  
+                  <i class="material-icons right">send</i>
+                </button>
+                </div>
+                
+              </form>
             </div>
           </div>
         );

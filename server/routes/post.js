@@ -22,6 +22,7 @@ router.get('/myPosts',requireLogin, async (req,res)=>{
 router.get('/allPosts',requireLogin,async (req,res)=>{
     let query = Post.find()
     .populate("postedBy", "id name")
+    .populate("comments.postedBy", "_id name")
     try {
         const posts = await query.exec()
         res.json({posts})
@@ -56,13 +57,16 @@ router.post('/createPost',requireLogin, (req,res)=>{
 })
 
 //---------------------------------------------------------------//
-//Like
+//Like && unlike
 router.put('/like', requireLogin,async (req,res)=>{
    await Post.findByIdAndUpdate(req.body.postId, {
         $push:{likes: req.user._id}
     },{
         new: true
-    }).exec((err, result)=>{
+    })
+    .populate("comments.postedBy", "_id name")
+    .populate("postedBy", "id name")
+    .exec((err, result)=>{
         if(err){
             return res.status(422).json({error: err})
         }
@@ -72,14 +76,15 @@ router.put('/like', requireLogin,async (req,res)=>{
     })
 })
 
-//---------------------------------------------------------------//
-//unLike
 router.put('/unlike', requireLogin,async (req,res)=>{
     await Post.findByIdAndUpdate(req.body.postId, {
         $pull:{likes: req.user._id}
     },{
         new: true
-    }).exec((err, result)=>{
+    })
+    .populate("comments.postedBy", "_id name")
+    .populate("postedBy", "id name")
+    .exec((err, result)=>{
         if(err){
             return res.status(422).json({error: err})
         }
@@ -88,5 +93,30 @@ router.put('/unlike', requireLogin,async (req,res)=>{
         }
     })
 })
+
+//-----------------------------------------------------------//
+//comment
+router.put('/comment', requireLogin,async (req,res)=>{
+    const comment = {
+        text: req.body.text,
+        postedBy: req.user._id
+    }
+
+    await Post.findByIdAndUpdate(req.body.postId, {
+         $push:{comments: comment}
+     },{
+         new: true
+     })
+     .populate("comments.postedBy", "_id name")
+     .populate("postedBy", "id name")
+     .exec((err, result)=>{
+         if(err){
+             return res.status(422).json({error: err})
+         }
+         else{
+             res.json(result)
+         }
+     })
+ })
 
 module.exports = router
