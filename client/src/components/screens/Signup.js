@@ -57,7 +57,7 @@ export default function Signup() {
           SignUP
         </button>
         <h5>
-          <Link to="/signup">Already have an account ?</Link>
+          <Link to="/signin">Already have an account ?</Link>
         </h5>
       </div>
     </div>

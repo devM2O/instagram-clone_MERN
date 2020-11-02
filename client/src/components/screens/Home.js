@@ -67,7 +67,7 @@ export default function Home() {
         setData(newData);
       });
   };
-  //---------------------------------------------------------------//
+  //-------------------------comment-----------------------------//
 
   const makeComment = (text, postId) => {
     fetch("/comment", {
@@ -80,18 +80,55 @@ export default function Home() {
         postId,
         text,
       }),
-    }).then(res=>res.json())
-    .then(result=>{
-      console.log(result);
-      const newData = data.map((item) => {
-        if (item._id == result._id) {
-          return result;
-        } else {
-          return item;
-        }
-      });
-      setData(newData)
     })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        const newData = data.map((item) => {
+          if (item._id == result._id) {
+            return result;
+          } else {
+            return item;
+          }
+        });
+        setData(newData);
+      });
+  };
+
+  //--------------------------delete post-----------------------------//
+  const deletePost = (postId) => {
+    fetch(`/deletePost/${postId}`, {
+      method: "delete",
+      headers: {
+        Authorization: "minnmawoo " + localStorage.getItem("jwt"),
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        const newData = data.filter((item) => {
+          return item._id !== result._id;
+        });
+        setData(newData);
+      });
+  };
+  //--------------------------delete comment-----------------------------//
+  const deleteComment = (commentId) => {
+    console.log(commentId);
+    fetch(`/deleteComment/${commentId}`, {
+      method: "delete",
+      headers: {
+        Authorization: "minnmawoo " + localStorage.getItem("jwt"),
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+      //   const newData = data.filter((item) => {
+      //     return item._id !== result._id;
+      //   });
+      //   setData(newData);
+      });
   };
 
   return (
@@ -99,17 +136,38 @@ export default function Home() {
       {data.map((item) => {
         return (
           <div className="card home-card" key={item._id}>
-            <h5>{item.postedBy.name}</h5>
+            <h5>
+              {item.postedBy.name}
+              {item.postedBy._id == state.id && (
+                <i
+                  className="material-icons"
+                  style={{ float: "right", cursor: "pointer" }}
+                  onClick={() => deletePost(item._id)}
+                >
+                  delete
+                </i>
+              )}
+            </h5>
             <div className="image-card">
-              <img className="img-card" src={item.photo} />
+              <img className="img-card" src={item.photo} key={item._id} />
             </div>
             <div className="card-content">
-              <i className="material-icons" style={{ color: "red" }}>
-                favorite
-              </i>
+              {/* HEART */}
+              {item.likes.includes(state.id) ? (
+                <i className="material-icons" style={{ color: "red" }}>
+                  favorite
+                </i>
+              ) : (
+                <i className="material-icons" style={{ color: "grey" }}>
+                  favorite
+                </i>
+              )}
+              {/* HEART END */}
+              {/* LIKE && UNLIKE */}
               {item.likes.includes(state.id) ? (
                 <i
                   className="material-icons"
+                  style={{ cursor: "pointer", marginLeft: "10px" }}
                   onClick={() => {
                     unlikePost(item._id);
                   }}
@@ -119,6 +177,7 @@ export default function Home() {
               ) : (
                 <i
                   className="material-icons"
+                  style={{ cursor: "pointer", marginLeft: "10px" }}
                   onClick={() => {
                     likePost(item._id);
                   }}
@@ -126,35 +185,49 @@ export default function Home() {
                   thumb_up
                 </i>
               )}
-
-              <h6>{item.likes.length} likes</h6>
+              {/* LIKE && UNLIKE END*/}
+              <h6>{item.likes.length} likes</h6> {/* LIKE COUNT */}
               <p>{item.body}</p>
-              {
-                item.comments.map(record=>{
-                  return(
-                  <h6 key={record._id}><span style={{fontWeight:"600"}}>{record.postedBy.name} </span>{record.text}</h6>
-                  )
-                })
-              }
+              {/* COMMENT DISPLAY */}
+              {item.comments.map((record) => {
+                return (
+                  <h6 key={record._id}>
+                    <span style={{ fontWeight: "600" }}>
+                      {record.postedBy.name}{" "}
+                      {record.postedBy._id == state.id && (
+                        <i
+                          className="material-icons"
+                          style={{ float: "right", cursor: "pointer" }}
+                          onClick={() => deleteComment(record._id)}
+                        >
+                          delete
+                        </i>
+                      )}
+                    </span>
+                    {record.text}
+                  </h6>
+                );
+              })}
+              {/* COMMENT DISPLAY END*/}
+              {/* COMMENT INPUT */}
               <form
-                onSubmit={(e)=>{
-                  e.preventDefault()
+                onSubmit={(e) => {
+                  e.preventDefault();
                   makeComment(e.target[0].value, item._id);
                 }}
               >
-                <div style={{display: "flex"}}>
-                <input type="text" placeholder="add comment"/>
-                <button
-                  class="btn waves-effect waves-light"
-                  type="submit"
-                  name="action"
-                >
-                  
-                  <i class="material-icons right">send</i>
-                </button>
+                <div style={{ display: "flex" }}>
+                  <input type="text" placeholder="add comment" />
+                  <button
+                    className="btn waves-effect waves-light"
+                    type="submit"
+                    name="action"
+                  >
+                    <i className="material-icons right">send</i>
+                  </button>
                 </div>
-                
               </form>
+              {/* COMMENT INPUT END*/}
             </div>
           </div>
         );

@@ -39,7 +39,10 @@ a {
 }
 
 .item{
-  width: 30%
+  margin-top: 20px;
+  width: 30%;
+  height: 100px !important;
+  object-fit: contain;
 }
 
 

@@ -9,6 +9,7 @@ const Post = mongoose.model("Post")
 router.get('/myPosts',requireLogin, async (req,res)=>{
     let query = Post.find({postedBy:req.user.id})
     .populate("postedBy", "id name")
+    .sort({"_id": -1})
     try {
         const myPosts = await query.exec()
         res.json({myPosts})
@@ -23,6 +24,7 @@ router.get('/allPosts',requireLogin,async (req,res)=>{
     let query = Post.find()
     .populate("postedBy", "id name")
     .populate("comments.postedBy", "_id name")
+    .sort({"_id": -1})
     try {
         const posts = await query.exec()
         res.json({posts})
@@ -118,5 +120,52 @@ router.put('/comment', requireLogin,async (req,res)=>{
          }
      })
  })
+
+ //----------------------------------------------------------------//
+ //DELETE POST
+ router.delete('/deletePost/:postId', requireLogin,async (req,res)=>{
+    await Post.findOne({_id: req.params.postId})
+    .populate("postedBy", "_id")
+    .exec((err, post)=>{
+        if(err || !post){
+            return res.status(422).json({error: err})
+        }
+        if(post.postedBy._id.toString() === req.user._id.toString()){
+            post.remove()
+            .then(result=>{
+                res.json(result)
+            })
+            .catch(err=>{
+                console.log(err);
+            })
+        }
+    })
+ })
+
+//  //----------------------------------------------------------------//
+//  //DELETE COMMENT
+//  router.delete('/deleteComment/:commentId', requireLogin,async (req,res)=>{
+//      console.log(req.params.commentId);
+//      const b = new mongoose.Types.ObjectId(req.params.commentId);
+
+     
+//     const a = await Post.find({comments : {id: b}})
+//     .populate("postedBy", "_id")
+//     .exec((err, comment)=>{
+//         if(err || !comment){
+//             return res.status(422).json({error: err})
+//         }
+//         if(comment.postedBy._id.toString() === req.user._id.toString()){
+//             comment.remove()
+//             .then(result=>{
+//                 res.json(result)
+//             })
+//             .catch(err=>{
+//                 console.log(err);
+//             })
+//         }
+//     })
+//     console.log(a);
+//  })
 
 module.exports = router

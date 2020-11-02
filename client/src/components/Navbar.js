@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, NavLink, useHistory } from "react-router-dom";
 import { UserContext } from "../App";
 
 export default function Navbar() {
@@ -16,7 +16,7 @@ export default function Navbar() {
         </li>,
         <li>
           <button
-            className="btn waves-effect waves-light #c62828 red darken-3"
+            className="btn waves-effect waves-light #c62828 red darken-2"
             onClick={() => {
               localStorage.clear()
               dispatch({type:"CLEAR"})
