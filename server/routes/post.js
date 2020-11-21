@@ -142,30 +142,6 @@ router.put('/comment', requireLogin,async (req,res)=>{
     })
  })
 
-//  //----------------------------------------------------------------//
-//  //DELETE COMMENT
-//  router.delete('/deleteComment/:commentId', requireLogin,async (req,res)=>{
-//      console.log(req.params.commentId);
-//      const b = new mongoose.Types.ObjectId(req.params.commentId);
 
-     
-//     const a = await Post.find({comments : {id: b}})
-//     .populate("postedBy", "_id")
-//     .exec((err, comment)=>{
-//         if(err || !comment){
-//             return res.status(422).json({error: err})
-//         }
-//         if(comment.postedBy._id.toString() === req.user._id.toString()){
-//             comment.remove()
-//             .then(result=>{
-//                 res.json(result)
-//             })
-//             .catch(err=>{
-//                 console.log(err);
-//             })
-//         }
-//     })
-//     console.log(a);
-//  })
 
 module.exports = router

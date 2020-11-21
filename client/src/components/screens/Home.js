@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { UserContext } from "../../App";
+import {Link} from "react-router-dom"
 
 export default function Home() {
   const [data, setData] = useState([]);
@@ -112,24 +113,7 @@ export default function Home() {
         setData(newData);
       });
   };
-  //--------------------------delete comment-----------------------------//
-  const deleteComment = (commentId) => {
-    console.log(commentId);
-    fetch(`/deleteComment/${commentId}`, {
-      method: "delete",
-      headers: {
-        Authorization: "minnmawoo " + localStorage.getItem("jwt"),
-      },
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        console.log(result);
-      //   const newData = data.filter((item) => {
-      //     return item._id !== result._id;
-      //   });
-      //   setData(newData);
-      });
-  };
+  
 
   return (
     <div className="home">
@@ -137,7 +121,8 @@ export default function Home() {
         return (
           <div className="card home-card" key={item._id}>
             <h5>
-              {item.postedBy.name}
+              <Link to={item.postedBy._id !== state.id? "/profile/"+item.postedBy._id : "/profile"}>{item.postedBy.name}</Link>
+              
               {item.postedBy._id == state.id && (
                 <i
                   className="material-icons"
@@ -194,15 +179,6 @@ export default function Home() {
                   <h6 key={record._id}>
                     <span style={{ fontWeight: "600" }}>
                       {record.postedBy.name}{" "}
-                      {record.postedBy._id == state.id && (
-                        <i
-                          className="material-icons"
-                          style={{ float: "right", cursor: "pointer" }}
-                          onClick={() => deleteComment(record._id)}
-                        >
-                          delete
-                        </i>
-                      )}
                     </span>
                     {record.text}
                   </h6>

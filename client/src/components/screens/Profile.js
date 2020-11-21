@@ -33,7 +33,7 @@ export default function Profile() {
           />
         </div>
         <div>
-          <h5>{state?state.name:"loading"}</h5>
+          <h4>{state?state.name:"loading"}</h4>
           <div style={{ display: "flex", width: "100%" }}>
             <h6 style={{ marginLeft: "5px" }}>40 posts</h6>
             <h6 style={{ marginLeft: "5px" }}>40 followers</h6>
