@@ -34,10 +34,11 @@ export default function Profile() {
         </div>
         <div>
           <h4>{state?state.name:"loading"}</h4>
+          <h5>{state?state.email:"loading"}</h5>
           <div style={{ display: "flex", width: "100%" }}>
-            <h6 style={{ marginLeft: "5px" }}>40 posts</h6>
-            <h6 style={{ marginLeft: "5px" }}>40 followers</h6>
-            <h6 style={{ marginLeft: "5px" }}>40 following</h6>
+            <h6 style={{ marginLeft: "5px" }}>{myPics.length} posts</h6>
+            <h6 style={{ marginLeft: "5px" }}>{state? state.followers.length : "0"} followers</h6>
+            <h6 style={{ marginLeft: "5px" }}>{state? state.following.length : "0"} following</h6>
           </div>
         </div>
       </div>
