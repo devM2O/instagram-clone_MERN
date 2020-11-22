@@ -6,7 +6,7 @@ const express = require('express');
 const app = express()
 app.use(express.json())
 const bodyParser = require('body-parser')
-const {DATABASE_URL} = require('../config/keys')
+const {DATABASE_URL} = require('./config/keys')
 //Mongoose
 const mongoose = require('mongoose');
 //connect to MongoDB
@@ -32,7 +32,7 @@ if(process.env.NODE_ENV == "production"){
   })
 }
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 6000;
 app.listen(port, function() {
   console.log(`Server has started successfully`);
 });
