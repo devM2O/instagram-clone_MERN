@@ -5,9 +5,9 @@ import {Link} from "react-router-dom"
 export default function Home() {
   const [data, setData] = useState([]);
   const { state, dispatch } = useContext(UserContext);
-  
+
   useEffect(() => {
-    fetch("/allPosts", {
+    fetch("/getsubpost", {
       headers: {
         Authorization: "minnmawoo " + localStorage.getItem("jwt"),
       },
@@ -136,8 +136,9 @@ export default function Home() {
             <div className="image-card">
               <img className="img-card" src={item.photo} key={item._id} />
             </div>
+            
             <div className="card-content">
-            <p style={{ fontWeight: "600", color: "blue", marginBottom: "10px", marginTop: "-15px"}}>{item.body}</p>
+            <p style={{ fontWeight: "600", color: "blue",marginBottom: "10px", marginTop: "-15px"}}>{item.body}</p>
               {/* HEART */}
               {item.likes.includes(state.id) ? (
                 <i className="material-icons" style={{ color: "red" }}>

@@ -8,6 +8,9 @@ export default function Navbar() {
   const renderList = () => {
     if (state) {
       return [
+        <li key={-1}>
+          <Link to="/myFollowingPost" >Following</Link>
+        </li>,
         <li key={0}>
           <Link to="/profile" >Profile</Link>
         </li>,

@@ -14,7 +14,7 @@ router.get("/protected", requireLogin, (req, res) => {
 //------------------------------------------------------//
 //Signup
 router.post("/signup", (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, pic } = req.body;
   if (!email || !name || !password) {
     return res.status(422).json({ error: "All fields are required" });
   }
@@ -26,6 +26,7 @@ router.post("/signup", (req, res) => {
           name: name,
           email: email,
           password: hashedpassword,
+          pic
         });
         user.save();
         return res.status(200).json({ message: "You are now registered" });
@@ -60,8 +61,8 @@ router.post("/signin", (req, res, next) => {
         if (isMatch) {
           // res.status(200).json({message: 'success'})
           const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
-          const {id, name, email, followers, following} = user
-          res.json({ token, user:{id, name, email, followers, following}});
+          const {id, name, email,pic, followers, following} = user
+          res.json({ token, user:{id, name, email,pic, followers, following}});
         } else {
           res.status(422).json({ error: "incorrect password" });
         }
